@@ -1,0 +1,202 @@
+[
+  {
+    "id": "K8SC-001",
+    "subtest": "k8s_core",
+    "difficulty": "easy",
+    "topic": "pods",
+    "stem": "What is the smallest deployable unit in Kubernetes?",
+    "choices": ["A) A Node", "B) A Pod", "C) A Container", "D) A Deployment"],
+    "answer": "B",
+    "explanation": "A Pod is the smallest deployable unit -- it wraps one or more containers that share a network namespace and can share storage."
+  },
+  {
+    "id": "K8SC-002",
+    "subtest": "k8s_core",
+    "difficulty": "medium",
+    "topic": "deployments",
+    "stem": "Why do you almost never create a bare Pod directly in production?",
+    "choices": ["A) Bare Pods are deprecated and rejected by the API server", "B) A Pod that fails or is deleted isn't automatically recreated on its own", "C) Pods can't run containers", "D) Pods don't support environment variables"],
+    "answer": "B",
+    "explanation": "A standalone Pod has no self-healing -- if it dies, nothing recreates it. A Deployment manages a ReplicaSet that ensures the desired number of Pods always exist."
+  },
+  {
+    "id": "K8SC-003",
+    "subtest": "k8s_core",
+    "difficulty": "medium",
+    "topic": "deployments",
+    "stem": "You edit a Deployment's ReplicaSet directly to change the replica count instead of editing the Deployment. What happens?",
+    "choices": ["A) The change persists permanently", "B) The Deployment controller will reconcile it back, overwriting your manual change", "C) It causes a permanent cluster error", "D) Nothing changes because ReplicaSets are read-only"],
+    "answer": "B",
+    "explanation": "The Deployment owns and continuously reconciles its ReplicaSet -- manual edits to the ReplicaSet get overwritten on the next reconcile. Always edit the Deployment."
+  },
+  {
+    "id": "K8SC-004",
+    "subtest": "k8s_core",
+    "difficulty": "easy",
+    "topic": "services",
+    "stem": "Why do Pods typically need a Service in front of them instead of being addressed directly by IP?",
+    "choices": ["A) Pods don't have IP addresses", "B) Pod IPs change whenever a Pod is recreated", "C) Services are required by Kubernetes syntax", "D) Direct Pod IPs are not routable at all"],
+    "answer": "B",
+    "explanation": "Pods are ephemeral and get a new IP whenever recreated. A Service provides a stable virtual IP/DNS name that load-balances across whichever Pods currently match its selector."
+  },
+  {
+    "id": "K8SC-005",
+    "subtest": "k8s_core",
+    "difficulty": "medium",
+    "topic": "services",
+    "stem": "A Service of type ClusterIP is not receiving any traffic to its backend Pods, even though the Pods are running. What's the most likely cause?",
+    "choices": ["A) ClusterIP services never work", "B) The Service's selector labels don't match the Pods' labels", "C) The cluster is out of IP addresses", "D) ClusterIP requires a LoadBalancer to function"],
+    "answer": "B",
+    "explanation": "A Service routes purely by label selector matching -- a common bug is a typo or mismatch between the Service's selector and the Pod template's labels."
+  },
+  {
+    "id": "K8SC-006",
+    "subtest": "k8s_core",
+    "difficulty": "easy",
+    "topic": "services",
+    "stem": "Which Service type asks the cloud provider to provision an external load balancer?",
+    "choices": ["A) ClusterIP", "B) NodePort", "C) LoadBalancer", "D) ExternalName"],
+    "answer": "C",
+    "explanation": "type: LoadBalancer triggers the cloud provider's controller to provision an actual external load balancer pointing at the Service."
+  },
+  {
+    "id": "K8SC-007",
+    "subtest": "k8s_core",
+    "difficulty": "medium",
+    "topic": "secrets",
+    "stem": "Are Kubernetes Secrets encrypted by default?",
+    "choices": ["A) Yes, always encrypted at rest automatically", "B) No -- they are base64-encoded by default, which is not encryption", "C) Only in namespaces named 'secure'", "D) Only when using a Deployment, not a Pod"],
+    "answer": "B",
+    "explanation": "Base64 is encoding, not encryption -- anyone with API read access to the Secret can trivially decode it. Real encryption at rest (etcd encryption) must be set up deliberately."
+  },
+  {
+    "id": "K8SC-008",
+    "subtest": "k8s_core",
+    "difficulty": "easy",
+    "topic": "namespaces",
+    "stem": "What is the primary purpose of a Kubernetes Namespace?",
+    "choices": ["A) To increase Pod CPU limits automatically", "B) To partition a cluster into virtual clusters for teams/environments/apps", "C) To encrypt traffic between Pods", "D) To replace the need for Services"],
+    "answer": "B",
+    "explanation": "Namespaces let you separate resources -- and often RBAC and quotas -- by team, environment, or application within one physical cluster."
+  },
+  {
+    "id": "K8SC-009",
+    "subtest": "k8s_core",
+    "difficulty": "medium",
+    "topic": "deployments",
+    "stem": "After a bad rollout of a Deployment's new image, what's the fastest way to get back to the previous working version?",
+    "choices": ["A) kubectl delete deployment and recreate it from scratch", "B) kubectl rollout undo deployment/<name>", "C) Manually edit every Pod", "D) Restart the whole cluster"],
+    "answer": "B",
+    "explanation": "kubectl rollout undo reverts a Deployment to its previous revision, using Kubernetes' built-in rollout history -- no manual recreation needed."
+  },
+  {
+    "id": "K8SC-010",
+    "subtest": "k8s_core",
+    "difficulty": "easy",
+    "topic": "configmaps",
+    "stem": "What's the key difference between a ConfigMap and a Secret?",
+    "choices": ["A) ConfigMaps can't be mounted as files, only env vars", "B) Secrets are for sensitive data; ConfigMaps are for non-sensitive configuration -- otherwise they're used similarly", "C) Secrets are always encrypted and ConfigMaps never are", "D) There is no meaningful difference"],
+    "answer": "B",
+    "explanation": "Both inject config into Pods the same way (env vars or mounted files); the distinction is intent -- Secrets for sensitive values, ConfigMaps for everything else."
+  },
+  {
+    "id": "K8SO-001",
+    "subtest": "k8s_operations",
+    "difficulty": "medium",
+    "topic": "ingress",
+    "stem": "You create an Ingress resource but traffic still isn't routed to your Service. What are you most likely missing?",
+    "choices": ["A) An Ingress Controller running in the cluster", "B) A ConfigMap", "C) A second Namespace", "D) A ReplicaSet"],
+    "answer": "A",
+    "explanation": "An Ingress resource is just a declaration -- it does nothing without an Ingress Controller (like NGINX or AWS Load Balancer Controller) actively watching and acting on it."
+  },
+  {
+    "id": "K8SO-002",
+    "subtest": "k8s_operations",
+    "difficulty": "hard",
+    "topic": "networking",
+    "stem": "A team applies a NetworkPolicy expecting it to restrict Pod-to-Pod traffic, but nothing changes. What's a likely explanation?",
+    "choices": ["A) NetworkPolicy objects always take effect immediately regardless of setup", "B) The cluster's CNI plugin doesn't support NetworkPolicy enforcement", "C) NetworkPolicy only works with LoadBalancer services", "D) NetworkPolicy requires Helm to function"],
+    "answer": "B",
+    "explanation": "NetworkPolicy enforcement depends entirely on the CNI plugin -- some CNIs (or default configurations) silently ignore NetworkPolicy objects."
+  },
+  {
+    "id": "K8SO-003",
+    "subtest": "k8s_operations",
+    "difficulty": "medium",
+    "topic": "storage",
+    "stem": "What does a StorageClass enable that a manually pre-created PersistentVolume does not?",
+    "choices": ["A) Dynamic provisioning of storage on demand when a PVC references it", "B) Encryption of all cluster traffic", "C) Automatic Pod autoscaling", "D) RBAC enforcement"],
+    "answer": "A",
+    "explanation": "A StorageClass enables dynamic provisioning: a PVC referencing it triggers automatic PV creation, instead of an admin needing to pre-create PVs by hand."
+  },
+  {
+    "id": "K8SO-004",
+    "subtest": "k8s_operations",
+    "difficulty": "easy",
+    "topic": "storage",
+    "stem": "What does a PersistentVolumeClaim (PVC) represent?",
+    "choices": ["A) The actual physical or cloud storage resource", "B) A request for storage by a Pod's owner, which gets bound to a matching PV", "C) A snapshot of a volume", "D) A type of ConfigMap"],
+    "answer": "B",
+    "explanation": "A PVC is a request (size, access mode) from the application side. Kubernetes binds it to a matching PersistentVolume -- the actual storage."
+  },
+  {
+    "id": "K8SO-005",
+    "subtest": "k8s_operations",
+    "difficulty": "medium",
+    "topic": "rbac",
+    "stem": "What's the difference between a Role and a ClusterRole?",
+    "choices": ["A) They're identical; ClusterRole is just a legacy name", "B) A Role is namespace-scoped; a ClusterRole applies cluster-wide", "C) A ClusterRole can only be used for Nodes", "D) A Role can't be bound to a ServiceAccount"],
+    "answer": "B",
+    "explanation": "Role grants permissions within a single namespace; ClusterRole grants permissions across the whole cluster (or for cluster-scoped resources like Nodes)."
+  },
+  {
+    "id": "K8SO-006",
+    "subtest": "k8s_operations",
+    "difficulty": "easy",
+    "topic": "rbac",
+    "stem": "How does a Pod authenticate to the Kubernetes API server as itself, rather than as a human user?",
+    "choices": ["A) It can't -- only humans can call the API", "B) Via a ServiceAccount", "C) Via the cluster's root kubeconfig", "D) Via a NetworkPolicy"],
+    "answer": "B",
+    "explanation": "A ServiceAccount is the workload-identity mechanism -- analogous to an IAM role for a cloud resource -- letting a Pod itself authenticate to the API server."
+  },
+  {
+    "id": "K8SO-007",
+    "subtest": "k8s_operations",
+    "difficulty": "medium",
+    "topic": "helm",
+    "stem": "What problem does Helm primarily solve compared to applying raw YAML manifests by hand?",
+    "choices": ["A) It eliminates the need for a Kubernetes API server", "B) It packages, templates, and versions a set of manifests as one manageable 'release'", "C) It replaces kubectl entirely", "D) It automatically writes application code"],
+    "answer": "B",
+    "explanation": "Helm charts bundle templated manifests with configurable values, managed as versioned releases -- install/upgrade/rollback as one unit instead of many loose files."
+  },
+  {
+    "id": "K8SO-008",
+    "subtest": "k8s_operations",
+    "difficulty": "medium",
+    "topic": "autoscaling",
+    "stem": "Pods are stuck in Pending because the cluster has no node with enough free capacity to schedule them. Which autoscaler addresses this specific problem?",
+    "choices": ["A) Horizontal Pod Autoscaler", "B) Cluster Autoscaler", "C) Vertical Pod Autoscaler only", "D) None; this requires manual intervention"],
+    "answer": "B",
+    "explanation": "Cluster Autoscaler adds (or removes) nodes based on scheduling pressure. HPA adds more Pods, which doesn't help if there's nowhere to schedule them."
+  },
+  {
+    "id": "K8SO-009",
+    "subtest": "k8s_operations",
+    "difficulty": "easy",
+    "topic": "troubleshooting",
+    "stem": "A Pod keeps restarting and you want to see the logs from BEFORE the most recent crash. What flag do you add to kubectl logs?",
+    "choices": ["A) --before", "B) --previous", "C) --history", "D) --old"],
+    "answer": "B",
+    "explanation": "kubectl logs <pod> --previous shows logs from the prior instance of the container, which is essential when the current instance just started after a crash."
+  },
+  {
+    "id": "K8SO-010",
+    "subtest": "k8s_operations",
+    "difficulty": "easy",
+    "topic": "troubleshooting",
+    "stem": "A Pod is stuck Pending and `kubectl get pods` gives no clue why. What's the next command to run?",
+    "choices": ["A) kubectl delete pod and hope a retry fixes it", "B) kubectl describe pod <name>, and check the Events section", "C) kubectl top pod", "D) Restart the whole cluster"],
+    "answer": "B",
+    "explanation": "kubectl describe surfaces Events at the bottom of its output, which almost always explains scheduling, image-pull, or probe failures that `get` alone doesn't show."
+  }
+]

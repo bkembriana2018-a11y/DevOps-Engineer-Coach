@@ -1,0 +1,202 @@
+[
+  {
+    "id": "TFF-001",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "easy",
+    "topic": "workflow",
+    "stem": "Which Terraform command shows what WOULD change without making any changes to real infrastructure?",
+    "choices": ["A) terraform apply", "B) terraform plan", "C) terraform init", "D) terraform validate"],
+    "answer": "B",
+    "explanation": "terraform plan is a dry run -- it refreshes state and shows the proposed diff, but never modifies real resources. terraform apply is what actually makes changes."
+  },
+  {
+    "id": "TFF-002",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "easy",
+    "topic": "workflow",
+    "stem": "When must you re-run terraform init?",
+    "choices": ["A) Before every single plan or apply, no exceptions", "B) Whenever you add or change a provider or backend configuration", "C) Only once, when the machine is first set up", "D) Never, if you already ran it once anywhere"],
+    "answer": "B",
+    "explanation": "init downloads providers and sets up the backend. It needs to be re-run when those change, but not for every routine plan/apply."
+  },
+  {
+    "id": "TFF-003",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "medium",
+    "topic": "state",
+    "stem": "Why is committing terraform.tfstate to a public git repository dangerous?",
+    "choices": ["A) It makes plans run slower", "B) State can contain secrets in plain text, like generated passwords", "C) Git doesn't support JSON files well", "D) It has no real danger, state is just metadata"],
+    "answer": "B",
+    "explanation": "State files can contain sensitive values in plain text (e.g., a database password Terraform generated), so they should never be committed to source control."
+  },
+  {
+    "id": "TFF-004",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "medium",
+    "topic": "state",
+    "stem": "What is the main advantage of a remote backend (e.g., S3 + DynamoDB) over local state for a team?",
+    "choices": ["A) It makes terraform apply run without any confirmation prompt", "B) Shared access plus locking, so two people can't apply concurrently and corrupt state", "C) It removes the need for providers", "D) It automatically writes your .tf files for you"],
+    "answer": "B",
+    "explanation": "Remote backends give the whole team access to the same state and, critically, locking -- preventing concurrent applies from racing and corrupting the state file."
+  },
+  {
+    "id": "TFF-005",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "easy",
+    "topic": "hcl",
+    "stem": "In HCL, how do you reference the ID of a resource declared as `resource \"aws_instance\" \"web\" { ... }`?",
+    "choices": ["A) web.id", "B) aws_instance.web.id", "C) resource.web.id", "D) instance.aws_instance.id"],
+    "answer": "B",
+    "explanation": "References follow <resource_type>.<local_name>.<attribute> -- so aws_instance.web.id, not just the local name alone."
+  },
+  {
+    "id": "TFF-006",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "medium",
+    "topic": "variables",
+    "stem": "Which has the HIGHEST precedence when the same Terraform variable is set in multiple places?",
+    "choices": ["A) The default value in the variable block", "B) An environment variable (TF_VAR_...)", "C) A -var flag on the command line", "D) terraform.tfvars"],
+    "answer": "C",
+    "explanation": "Command-line -var/-var-file flags have the highest precedence, followed by *.auto.tfvars, then terraform.tfvars, then environment variables, then the block default."
+  },
+  {
+    "id": "TFF-007",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "hard",
+    "topic": "dependency-graph",
+    "stem": "Resource B doesn't reference any attribute of resource A, but must still be created after A for a reason Terraform can't infer. What do you use?",
+    "choices": ["A) Rename B to sort alphabetically after A", "B) depends_on", "C) terraform plan -order", "D) Nothing; Terraform always applies in file order"],
+    "answer": "B",
+    "explanation": "depends_on explicitly declares an ordering dependency when there's no implicit reference for Terraform's dependency graph to pick up on its own."
+  },
+  {
+    "id": "TFF-008",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "easy",
+    "topic": "data-sources",
+    "stem": "What is the purpose of a `data` block in Terraform?",
+    "choices": ["A) To create a new resource", "B) To read information about existing infrastructure without managing it", "C) To destroy a resource", "D) To define a provider"],
+    "answer": "B",
+    "explanation": "Data sources are read-only lookups (e.g., finding the latest AMI ID) -- Terraform doesn't create, update, or destroy the thing a data source reads."
+  },
+  {
+    "id": "TFF-009",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "medium",
+    "topic": "workflow",
+    "stem": "A teammate says they ran 'apply' but meant to just preview changes. What likely went wrong in their workflow?",
+    "choices": ["A) They confused plan and apply", "B) Terraform has no apply command", "C) apply always requires a second confirmation, so this can't happen", "D) This is expected default behavior"],
+    "answer": "A",
+    "explanation": "This is a very common real incident pattern -- plan previews, apply executes. Mixing them up is one of the most cited causes of accidental production changes."
+  },
+  {
+    "id": "TFF-010",
+    "subtest": "terraform_fundamentals",
+    "difficulty": "easy",
+    "topic": "hcl",
+    "stem": "What kind of language is HCL, in terms of how you write infrastructure changes?",
+    "choices": ["A) Imperative -- you write step-by-step commands", "B) Declarative -- you describe the desired end state", "C) Object-oriented with inheritance", "D) A general-purpose scripting language"],
+    "answer": "B",
+    "explanation": "HCL is declarative: you describe what the end state should look like, and Terraform's engine figures out the steps to get there."
+  },
+  {
+    "id": "TFA-001",
+    "subtest": "terraform_advanced",
+    "difficulty": "easy",
+    "topic": "modules",
+    "stem": "What is a Terraform 'root module'?",
+    "choices": ["A) Only modules published to the Terraform Registry", "B) The top-level configuration directory you run terraform commands from", "C) A module that has no variables", "D) A deprecated concept"],
+    "answer": "B",
+    "explanation": "Every Terraform configuration is technically a module -- the one you invoke terraform commands directly against is called the root module."
+  },
+  {
+    "id": "TFA-002",
+    "subtest": "terraform_advanced",
+    "difficulty": "medium",
+    "topic": "workspaces",
+    "stem": "What do Terraform workspaces isolate?",
+    "choices": ["A) Provider plugins", "B) State, while sharing the same configuration and backend", "C) Entirely separate codebases", "D) IAM permissions"],
+    "answer": "B",
+    "explanation": "Workspaces isolate state under one configuration and backend -- they're best when environments are structurally identical and differ only by input values."
+  },
+  {
+    "id": "TFA-003",
+    "subtest": "terraform_advanced",
+    "difficulty": "hard",
+    "topic": "workspaces",
+    "stem": "Dev and prod environments have significantly different resource shapes (prod has extra read replicas, WAF rules, and a different network topology). What's the more maintainable approach than a single workspace-based config?",
+    "choices": ["A) Force them into one workspace-based config regardless", "B) Separate root modules/directories per environment", "C) Use only default values and hope it works", "D) Terraform can't handle different environments at all"],
+    "answer": "B",
+    "explanation": "Workspaces work best when environments are structurally identical. When they genuinely diverge, separate root modules per environment are usually easier to reason about and maintain."
+  },
+  {
+    "id": "TFA-004",
+    "subtest": "terraform_advanced",
+    "difficulty": "medium",
+    "topic": "drift",
+    "stem": "A teammate manually changed a security group rule in the AWS console that Terraform also manages. What will terraform plan show next?",
+    "choices": ["A) Nothing -- Terraform ignores console changes", "B) Drift -- a diff between the manual change and what the config declares", "C) An error that halts all future plans", "D) It will automatically accept the console change as the new source of truth"],
+    "answer": "B",
+    "explanation": "terraform plan refreshes state from the real provider and diffs against config, surfacing drift caused by out-of-band changes like manual console edits."
+  },
+  {
+    "id": "TFA-005",
+    "subtest": "terraform_advanced",
+    "difficulty": "medium",
+    "topic": "import",
+    "stem": "After running terraform import on an existing S3 bucket, what do you still need to do?",
+    "choices": ["A) Nothing, import handles everything including the .tf config", "B) Write the matching resource configuration yourself (in most versions)", "C) Delete the bucket and recreate it", "D) Re-run terraform init only"],
+    "answer": "B",
+    "explanation": "In most Terraform versions, import only writes state -- it associates a real resource with a resource block you must already have written (newer versions can help scaffold config, but it's not automatic by default)."
+  },
+  {
+    "id": "TFA-006",
+    "subtest": "terraform_advanced",
+    "difficulty": "easy",
+    "topic": "tooling",
+    "stem": "What does `terraform fmt` do?",
+    "choices": ["A) Deletes unused resources", "B) Rewrites configuration files to canonical formatting style", "C) Formats the remote state backend", "D) Runs terraform apply with formatting options"],
+    "answer": "B",
+    "explanation": "terraform fmt is purely a style/formatting tool -- it doesn't change behavior, just canonicalizes indentation and spacing, often checked in CI."
+  },
+  {
+    "id": "TFA-007",
+    "subtest": "terraform_advanced",
+    "difficulty": "medium",
+    "topic": "tooling",
+    "stem": "A specific EC2 instance is in a broken state that Terraform itself won't detect as needing replacement. What forces Terraform to destroy and recreate just that resource on the next apply?",
+    "choices": ["A) terraform destroy (the whole configuration)", "B) terraform apply -replace=<resource address>", "C) Deleting the .tf file for that resource", "D) terraform fmt"],
+    "answer": "B",
+    "explanation": "apply -replace (the modern equivalent of the older 'taint' command) forces a specific resource to be destroyed and recreated on the next apply."
+  },
+  {
+    "id": "TFA-008",
+    "subtest": "terraform_advanced",
+    "difficulty": "easy",
+    "topic": "modules",
+    "stem": "How does a child module typically receive configuration from its caller?",
+    "choices": ["A) Through global environment variables only", "B) Through input variables declared in the module", "C) Modules cannot be configured, only hardcoded", "D) By editing the module's source files directly each time"],
+    "answer": "B",
+    "explanation": "Modules declare input variables just like a root module does -- that's the entire mechanism for configuring reusable modules from the calling configuration."
+  },
+  {
+    "id": "TFA-009",
+    "subtest": "terraform_advanced",
+    "difficulty": "medium",
+    "topic": "remote-state",
+    "stem": "A 'networking' root module manages a VPC, and an 'app' root module needs that VPC's ID without hardcoding it. What's the standard way to pass it across?",
+    "choices": ["A) Copy-paste the ID by hand each time", "B) A terraform_remote_state data source reading the networking module's state", "C) Store it in a .tfvars file that's manually kept in sync", "D) There is no way to share values between root modules"],
+    "answer": "B",
+    "explanation": "terraform_remote_state lets one configuration read another's outputs from its remote state, read-only -- the standard pattern for sharing values across separately-applied root modules."
+  },
+  {
+    "id": "TFA-010",
+    "subtest": "terraform_advanced",
+    "difficulty": "easy",
+    "topic": "tooling",
+    "stem": "What does `terraform validate` check?",
+    "choices": ["A) Whether real infrastructure matches state (drift)", "B) Syntax and internal configuration consistency, without contacting any backend or provider", "C) Whether your AWS credentials are valid", "D) Code style only"],
+    "answer": "B",
+    "explanation": "validate is a fast, local-only syntax/consistency check -- it doesn't talk to a backend or a cloud provider, unlike plan."
+  }
+]

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cloud Coach</title>
+  <link rel="stylesheet" href="/static/styles.css?v=1" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark">Cloud</span>
+      <span class="name">Coach</span>
+      <span class="sub">your AWS · Terraform · Kubernetes co-pilot</span>
+    </div>
+    <div class="status" id="llmStatus">checking LLM…</div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="dash" class="on">My Progress</button>
+    <button data-tab="study">Learn</button>
+    <button data-tab="cards">Flashcards</button>
+    <button data-tab="quiz">Practice</button>
+    <button data-tab="coach">Coach</button>
+  </nav>
+
+  <main>
+    <section id="tab-dash" class="panel on">
+      <div class="hero">
+        <p class="hero-eyebrow">Hey, future cloud engineer ☁</p>
+        <h1 class="hero-title">Let's get you fluent, one topic at a time.</h1>
+        <p class="hero-sub">A calm corner to build real AWS, Terraform, and Kubernetes knowledge — no cramming, just steady practice at your own pace. Here's how to get the most out of it:</p>
+        <ol class="hero-steps">
+          <li>
+            <span class="hero-step-num">1</span>
+            <div><strong>Pick your goal</strong><span class="hero-step-desc">Set your target track just below so the app knows what to prioritize.</span></div>
+          </li>
+          <li>
+            <span class="hero-step-num">2</span>
+            <div><strong>Take a baseline quiz</strong><span class="hero-step-desc">Head to Practice and try a mixed quiz to see where you're starting from.</span></div>
+          </li>
+          <li>
+            <span class="hero-step-num">3</span>
+            <div><strong>Study your weak spots</strong><span class="hero-step-desc">Use Learn for the full write-up, or ask Coach for a quick explanation any time.</span></div>
+          </li>
+          <li>
+            <span class="hero-step-num">4</span>
+            <div><strong>Drill with flashcards</strong><span class="hero-step-desc">Quick service names, commands, and gotchas whenever you have a few spare minutes.</span></div>
+          </li>
+          <li>
+            <span class="hero-step-num">5</span>
+            <div><strong>Check back here</strong><span class="hero-step-desc">Watch your readiness grow topic by topic — not just by how you feel.</span></div>
+          </li>
+        </ol>
+        <p class="hero-signoff">You've got this. Let's go build it. ☁</p>
+      </div>
+
+      <div class="row">
+        <label>Your goal
+          <select id="track">
+            <option value="full_stack_devops" selected>Full-stack DevOps</option>
+            <option value="platform_engineer">Platform Engineer (K8s + Terraform)</option>
+            <option value="cloud_architect">Cloud Architect (AWS-heavy)</option>
+          </select>
+        </label>
+        <button id="resetBtn" class="ghost">Clear my progress</button>
+      </div>
+      <p class="disclaimer" id="disclaimer"></p>
+      <h2>Where you stand</h2>
+      <div id="composites" class="cards"></div>
+      <h2>What to do next</h2>
+      <ol id="actions" class="actions"></ol>
+      <h2>Topic by topic</h2>
+      <div id="subtests" class="table-wrap"></div>
+    </section>
+
+    <section id="tab-study" class="panel">
+      <div class="row">
+        <label>Topic
+          <select id="studyTopic">
+            <option value="overview">Overview & certifications</option>
+            <option value="full_stack_devops">Track guide (all three)</option>
+            <option value="aws_core">AWS Core Services</option>
+            <option value="aws_architecture">AWS Architecture & Networking</option>
+            <option value="terraform_fundamentals">Terraform Fundamentals</option>
+            <option value="terraform_advanced">Terraform Modules & Workflows</option>
+            <option value="k8s_core">Kubernetes Core Objects</option>
+            <option value="k8s_operations">Kubernetes Operations</option>
+          </select>
+        </label>
+        <button id="studyAsk">Explain this to me</button>
+      </div>
+      <article id="studyOut" class="prose"></article>
+    </section>
+
+    <section id="tab-cards" class="panel">
+      <div class="row wrap">
+        <label>Deck
+          <select id="cardDeck">
+            <option value="all">All decks</option>
+          </select>
+        </label>
+        <button id="shuffleCards" class="ghost">Shuffle</button>
+      </div>
+      <div id="cardMeta" class="muted"></div>
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flip card">
+        <div class="flashcard-inner">
+          <div class="flashcard-face front">
+            <div class="flashcard-eyebrow">Tap to flip</div>
+            <div class="flashcard-text" id="cardFront"></div>
+          </div>
+          <div class="flashcard-face back">
+            <div class="flashcard-eyebrow">Answer</div>
+            <div class="flashcard-text" id="cardBack"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="cardNav">
+        <button id="cardPrev" class="ghost">← Previous</button>
+        <button id="cardFlip">Flip</button>
+        <button id="cardNext" class="ghost">Next →</button>
+      </div>
+    </section>
+
+    <section id="tab-quiz" class="panel">
+      <div class="row wrap">
+        <label>Topic
+          <select id="quizSub">
+            <option value="mixed">Mixed</option>
+          </select>
+        </label>
+        <label>Questions
+          <select id="quizN">
+            <option>5</option>
+            <option selected>8</option>
+            <option>10</option>
+            <option>12</option>
+          </select>
+        </label>
+        <label>Difficulty
+          <select id="quizDiff">
+            <option value="any">Any</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="quizTimed" checked /> Timed</label>
+        <label class="check"><input type="checkbox" id="quizLlm" /> Add a few AI questions</label>
+        <button id="startQuiz">Start practicing</button>
+      </div>
+      <div id="quizMeta" class="muted"></div>
+      <div id="quizBox"></div>
+    </section>
+
+    <section id="tab-coach" class="panel">
+      <div class="row">
+        <label>Focus on
+          <select id="coachSub">
+            <option value="">General</option>
+          </select>
+        </label>
+      </div>
+      <div id="chatLog" class="chat"></div>
+      <div id="chatWait" hidden></div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" autocomplete="off" placeholder="Ask me anything — a concept, a command, or a mini quiz…" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    Original practice content only. Not affiliated with AWS, HashiCorp, or the CNCF. Practice percent is not
+    an official exam score — verify current exam blueprints with the certifying body before you register.
+  </footer>
+  <script src="/static/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  { "id": "tf-001", "deck": "terraform", "front": "terraform plan", "back": "Dry run -- shows the proposed diff without making any changes to real infrastructure." },
+  { "id": "tf-002", "deck": "terraform", "front": "terraform apply", "back": "Actually executes the changes shown by plan, prompting for confirmation by default." },
+  { "id": "tf-003", "deck": "terraform", "front": "terraform init", "back": "Downloads providers and sets up the backend. Re-run whenever those change, not for every routine plan/apply." },
+  { "id": "tf-004", "deck": "terraform", "front": "State file", "back": "JSON mapping of your config to real resource IDs. Can contain plaintext secrets -- never commit it to source control." },
+  { "id": "tf-005", "deck": "terraform", "front": "Remote backend", "back": "Shared, lockable state (e.g. S3+DynamoDB, Terraform Cloud) -- prevents concurrent applies from corrupting state." },
+  { "id": "tf-006", "deck": "terraform", "front": "Resource reference syntax", "back": "<resource_type>.<local_name>.<attribute> -- e.g. aws_instance.web.id, not just 'web.id'." },
+  { "id": "tf-007", "deck": "terraform", "front": "Data source", "back": "Read-only lookup of existing infrastructure. Terraform never creates, updates, or destroys what a data source reads." },
+  { "id": "tf-008", "deck": "terraform", "front": "Variable precedence (high to low)", "back": "-var/-var-file flag > *.auto.tfvars > terraform.tfvars > TF_VAR_ environment variable > default in the block." },
+  { "id": "tf-009", "deck": "terraform", "front": "depends_on", "back": "Explicitly declares an ordering dependency when there's no implicit resource reference for Terraform's dependency graph to infer." },
+  { "id": "tf-010", "deck": "terraform", "front": "HCL paradigm", "back": "Declarative -- you describe the desired end state; Terraform's engine determines the steps to reach it." },
+  { "id": "tf-011", "deck": "terraform", "front": "Root module", "back": "The top-level configuration directory you run terraform commands from. Every config is technically a module." },
+  { "id": "tf-012", "deck": "terraform", "front": "Workspaces", "back": "Isolate state under one shared configuration/backend. Best when environments are structurally identical, differing only by input values." },
+  { "id": "tf-013", "deck": "terraform", "front": "Drift", "back": "When real infrastructure no longer matches state (e.g. a manual console change). terraform plan surfaces it by refreshing and diffing." },
+  { "id": "tf-014", "deck": "terraform", "front": "terraform import", "back": "Associates an existing real resource with a resource block, writing state only -- in most versions you still write the matching config yourself." },
+  { "id": "tf-015", "deck": "terraform", "front": "terraform fmt", "back": "Rewrites files to canonical style. Purely cosmetic, no behavior change -- often checked in CI." },
+  { "id": "tf-016", "deck": "terraform", "front": "terraform validate", "back": "Checks syntax and internal consistency locally, without contacting any backend or provider." },
+  { "id": "tf-017", "deck": "terraform", "front": "apply -replace", "back": "Forces a specific resource to be destroyed and recreated on the next apply -- the modern replacement for the old 'taint' command." },
+  { "id": "tf-018", "deck": "terraform", "front": "terraform_remote_state", "back": "A data source that reads another configuration's outputs from its remote state -- the standard way to pass values between separately-applied root modules." },
+  { "id": "tf-019", "deck": "terraform", "front": "Module input mechanism", "back": "Child modules declare input variables, exactly like a root module -- that's the entire configuration mechanism for reuse." },
+  { "id": "tf-020", "deck": "terraform", "front": "Terraform Associate passing bar", "back": "Commonly cited around 70% on a scaled score -- confirm the current number with HashiCorp before registering." }
+]

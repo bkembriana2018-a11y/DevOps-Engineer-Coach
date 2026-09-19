@@ -1,0 +1,202 @@
+[
+  {
+    "id": "AWSC-001",
+    "subtest": "aws_core",
+    "difficulty": "easy",
+    "topic": "iam",
+    "stem": "In IAM, what happens when one policy explicitly denies an action and another policy explicitly allows the same action for the same principal?",
+    "choices": ["A) The allow wins because it was evaluated first", "B) The deny always wins", "C) AWS averages the two and asks for MFA", "D) The most recently attached policy wins"],
+    "answer": "B",
+    "explanation": "An explicit Deny always overrides any Allow, regardless of how many policies grant it or which was attached more recently."
+  },
+  {
+    "id": "AWSC-002",
+    "subtest": "aws_core",
+    "difficulty": "easy",
+    "topic": "iam",
+    "stem": "What is the AWS-recommended way to give an EC2 instance permission to read from an S3 bucket?",
+    "choices": ["A) Store an IAM user's access key in the instance's user data", "B) Attach an IAM role to the instance profile", "C) Make the bucket public", "D) Hardcode credentials in the application code"],
+    "answer": "B",
+    "explanation": "IAM roles attached via an instance profile provide temporary, automatically-rotated credentials to the instance -- no long-term keys to leak or manage."
+  },
+  {
+    "id": "AWSC-003",
+    "subtest": "aws_core",
+    "difficulty": "medium",
+    "topic": "ec2",
+    "stem": "You need the cheapest disk option for a batch job's scratch data that can be completely lost if the instance stops. Which should you use?",
+    "choices": ["A) EBS gp3 volume", "B) Instance store", "C) S3 Standard", "D) EFS"],
+    "answer": "B",
+    "explanation": "Instance store is directly-attached, ephemeral, and free with many instance types -- perfect for scratch/temp data, but it's wiped on stop or termination."
+  },
+  {
+    "id": "AWSC-004",
+    "subtest": "aws_core",
+    "difficulty": "medium",
+    "topic": "ec2",
+    "stem": "Which statement about security groups is correct?",
+    "choices": ["A) They are stateless and require explicit outbound rules for every response", "B) They support both allow and deny rules", "C) They are stateful -- allowing inbound traffic automatically allows the matching outbound response", "D) They operate at the subnet level, not the instance level"],
+    "answer": "C",
+    "explanation": "Security groups are stateful and instance/ENI-scoped, and only support Allow rules. Network ACLs are the stateless, subnet-level, allow-and-deny mechanism."
+  },
+  {
+    "id": "AWSC-005",
+    "subtest": "aws_core",
+    "difficulty": "easy",
+    "topic": "s3",
+    "stem": "Once S3 Versioning is enabled on a bucket, what are your options?",
+    "choices": ["A) It can be fully disabled again at any time", "B) It can only be suspended, not fully disabled", "C) It automatically deletes old versions after 30 days", "D) It can only be enabled during bucket creation"],
+    "answer": "B",
+    "explanation": "Versioning is one-way: once enabled, you can suspend new version creation, but you cannot return the bucket to a never-versioned state."
+  },
+  {
+    "id": "AWSC-006",
+    "subtest": "aws_core",
+    "difficulty": "medium",
+    "topic": "s3",
+    "stem": "A company wants to automatically move objects to cheaper storage as they age, without deleting them. What S3 feature does this?",
+    "choices": ["A) Cross-Region Replication", "B) Lifecycle rules", "C) Transfer Acceleration", "D) Object Lock"],
+    "answer": "B",
+    "explanation": "Lifecycle rules automate transitions between storage classes (e.g., Standard -> Standard-IA -> Glacier) based on object age, and can also expire objects entirely."
+  },
+  {
+    "id": "AWSC-007",
+    "subtest": "aws_core",
+    "difficulty": "hard",
+    "topic": "s3",
+    "stem": "A bucket policy explicitly denies access from outside a specific VPC, but an IAM user's identity-based policy grants s3:GetObject with no conditions. Can the user read the object from outside that VPC?",
+    "choices": ["A) Yes, identity-based allows always win", "B) No, the explicit deny in the bucket policy applies regardless of the identity-based allow", "C) Only if the user is the bucket owner", "D) Only with MFA"],
+    "answer": "B",
+    "explanation": "Policy evaluation is a union across all applicable policies (identity-based and resource-based), and an explicit Deny anywhere in that union wins."
+  },
+  {
+    "id": "AWSC-008",
+    "subtest": "aws_core",
+    "difficulty": "easy",
+    "topic": "vpc",
+    "stem": "What makes a subnet 'public' in a VPC?",
+    "choices": ["A) A special 'public subnet' resource type", "B) Its route table sends 0.0.0.0/0 traffic to an Internet Gateway", "C) It has more than 256 IP addresses", "D) It is tagged 'public' in the console"],
+    "answer": "B",
+    "explanation": "There's no distinct public-subnet resource -- 'public' is purely a function of the subnet's route table having a default route to an Internet Gateway."
+  },
+  {
+    "id": "AWSC-009",
+    "subtest": "aws_core",
+    "difficulty": "medium",
+    "topic": "vpc",
+    "stem": "What is the purpose of a NAT Gateway?",
+    "choices": ["A) Let private-subnet resources initiate outbound internet traffic without being directly reachable from it", "B) Let internet traffic reach private-subnet resources", "C) Encrypt traffic between subnets", "D) Provide DNS resolution inside the VPC"],
+    "answer": "A",
+    "explanation": "A NAT Gateway (in a public subnet) lets private-subnet resources reach the internet outbound (e.g., for patching) while remaining unreachable from the internet."
+  },
+  {
+    "id": "AWSC-010",
+    "subtest": "aws_core",
+    "difficulty": "easy",
+    "topic": "iam",
+    "stem": "Which of these is scoped globally rather than per-region?",
+    "choices": ["A) EC2 instances", "B) VPCs", "C) IAM", "D) EBS volumes"],
+    "answer": "C",
+    "explanation": "IAM is a global service -- users, roles, and policies are not tied to a specific AWS region, unlike EC2, VPC, and EBS."
+  },
+  {
+    "id": "AWSA-001",
+    "subtest": "aws_architecture",
+    "difficulty": "medium",
+    "topic": "high-availability",
+    "stem": "For true multi-AZ resilience of outbound internet access from private subnets, what's required?",
+    "choices": ["A) One NAT Gateway shared across the whole VPC", "B) One NAT Gateway per Availability Zone", "C) A single Internet Gateway is sufficient", "D) NAT Gateways are automatically multi-AZ"],
+    "answer": "B",
+    "explanation": "A NAT Gateway lives in one AZ. If that AZ fails, private subnets in other AZs lose outbound access unless each AZ has its own NAT Gateway."
+  },
+  {
+    "id": "AWSA-002",
+    "subtest": "aws_architecture",
+    "difficulty": "medium",
+    "topic": "networking",
+    "stem": "VPC A is peered with VPC B, and VPC B is peered with VPC C. Can VPC A reach VPC C through this setup?",
+    "choices": ["A) Yes, peering is transitive", "B) No, VPC Peering is not transitive -- A needs a direct peering connection to C, or a Transit Gateway", "C) Only if all three are in the same region", "D) Only if C has a public IP"],
+    "answer": "B",
+    "explanation": "VPC Peering connections are point-to-point and never transitive. For many-VPC connectivity, a Transit Gateway is the standard solution."
+  },
+  {
+    "id": "AWSA-003",
+    "subtest": "aws_architecture",
+    "difficulty": "easy",
+    "topic": "load-balancing",
+    "stem": "Which load balancer type operates at Layer 7 and can route based on URL path?",
+    "choices": ["A) Network Load Balancer", "B) Application Load Balancer", "C) Classic Load Balancer only", "D) Gateway Load Balancer"],
+    "answer": "B",
+    "explanation": "The ALB is Layer 7 (HTTP/HTTPS) and can route by host or path to different target groups. NLB is Layer 4 for raw TCP/UDP performance."
+  },
+  {
+    "id": "AWSA-004",
+    "subtest": "aws_architecture",
+    "difficulty": "medium",
+    "topic": "load-balancing",
+    "stem": "A workload needs to handle extremely high-throughput raw TCP traffic with the lowest possible latency, and doesn't need HTTP-aware routing. Which is the better fit?",
+    "choices": ["A) Application Load Balancer", "B) Network Load Balancer", "C) Route 53 alone", "D) A single EC2 instance with no load balancer"],
+    "answer": "B",
+    "explanation": "NLB operates at Layer 4, offering static IPs per AZ and the lowest latency for high-throughput TCP/UDP -- the right tool when you don't need HTTP semantics."
+  },
+  {
+    "id": "AWSA-005",
+    "subtest": "aws_architecture",
+    "difficulty": "easy",
+    "topic": "dns",
+    "stem": "Which AWS service lets you route traffic based on the health of an endpoint, without changing application code?",
+    "choices": ["A) IAM", "B) Route 53 health-check-based routing", "C) EBS", "D) VPC Peering"],
+    "answer": "B",
+    "explanation": "Route 53 supports failover, weighted, latency-based, and geolocation routing policies driven by health checks -- entirely at the DNS layer."
+  },
+  {
+    "id": "AWSA-006",
+    "subtest": "aws_architecture",
+    "difficulty": "hard",
+    "topic": "well-architected",
+    "stem": "A design is highly available across three regions but grants its application's IAM role full admin access to simplify development. Which Well-Architected pillar does this most clearly violate?",
+    "choices": ["A) Reliability", "B) Cost Optimization", "C) Security (least privilege)", "D) Sustainability"],
+    "answer": "C",
+    "explanation": "Overly broad IAM permissions violate the Security pillar's principle of least privilege, independent of how reliable or available the rest of the design is."
+  },
+  {
+    "id": "AWSA-007",
+    "subtest": "aws_architecture",
+    "difficulty": "medium",
+    "topic": "well-architected",
+    "stem": "A scenario only requires surviving the loss of a single data center within a region. What's the appropriately-scoped design, per the Well-Architected framework's cost pillar?",
+    "choices": ["A) Multi-region active-active", "B) Multi-AZ within a single region", "C) A single AZ with frequent backups", "D) No redundancy needed"],
+    "answer": "B",
+    "explanation": "Multi-AZ addresses data-center-level failure at much lower cost/complexity than multi-region. Reaching for multi-region when it isn't required is a common over-engineering trap."
+  },
+  {
+    "id": "AWSA-008",
+    "subtest": "aws_architecture",
+    "difficulty": "hard",
+    "topic": "networking",
+    "stem": "A team's NAT Gateway costs have grown larger than their compute costs due to heavy S3 traffic from private subnets. What's the most direct fix?",
+    "choices": ["A) Add more NAT Gateways", "B) Use a Gateway VPC Endpoint for S3", "C) Move all resources to public subnets", "D) Switch from ALB to NLB"],
+    "answer": "B",
+    "explanation": "A Gateway VPC Endpoint for S3 lets traffic reach S3 without traversing the NAT Gateway at all, and it's free -- directly addressing NAT data-processing costs."
+  },
+  {
+    "id": "AWSA-009",
+    "subtest": "aws_architecture",
+    "difficulty": "medium",
+    "topic": "scaling",
+    "stem": "What is the simplest and most commonly recommended Auto Scaling Group policy type for a workload where CPU usage predicts load well?",
+    "choices": ["A) Scheduled scaling only", "B) Target tracking (e.g., keep average CPU at 50%)", "C) Manual scaling", "D) Step scaling with no target"],
+    "answer": "B",
+    "explanation": "Target tracking policies are the simplest to reason about: you declare a target metric value and Auto Scaling adjusts capacity to hold it there."
+  },
+  {
+    "id": "AWSA-010",
+    "subtest": "aws_architecture",
+    "difficulty": "easy",
+    "topic": "well-architected",
+    "stem": "How many pillars does the AWS Well-Architected Framework currently define?",
+    "choices": ["A) Four", "B) Five", "C) Six", "D) Eight"],
+    "answer": "C",
+    "explanation": "Six: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability."
+  }
+]

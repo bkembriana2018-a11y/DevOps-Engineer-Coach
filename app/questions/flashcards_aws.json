@@ -1,0 +1,22 @@
+[
+  { "id": "aws-001", "deck": "aws", "front": "IAM Role", "back": "An identity anything can assume temporarily (EC2, Lambda, another account) via STS for short-lived credentials -- the recommended alternative to long-term access keys." },
+  { "id": "aws-002", "deck": "aws", "front": "Explicit Deny", "back": "Always wins over any Allow in IAM policy evaluation, no matter how many policies grant access or which was attached most recently." },
+  { "id": "aws-003", "deck": "aws", "front": "Security Group", "back": "Stateful, instance/ENI-level virtual firewall. Allow-only rules; allowing inbound automatically allows the matching outbound response." },
+  { "id": "aws-004", "deck": "aws", "front": "Network ACL", "back": "Stateless, subnet-level firewall. Supports both Allow and Deny rules, evaluated in numbered order." },
+  { "id": "aws-005", "deck": "aws", "front": "Instance Store", "back": "Directly-attached, ephemeral EC2 disk. Fast and often free, but wiped on stop/termination -- scratch data only." },
+  { "id": "aws-006", "deck": "aws", "front": "EBS", "back": "Elastic Block Store -- durable, network-attached disk that persists independently of the instance lifecycle (unless delete-on-termination is set)." },
+  { "id": "aws-007", "deck": "aws", "front": "S3 Versioning", "back": "Once enabled, keeps every version of an object. Can be suspended later, but never fully turned back off." },
+  { "id": "aws-008", "deck": "aws", "front": "S3 Lifecycle Rule", "back": "Automatically transitions objects between storage classes (or expires them) as they age, without manual intervention." },
+  { "id": "aws-009", "deck": "aws", "front": "Public subnet", "back": "Not a distinct resource type -- just a subnet whose route table sends 0.0.0.0/0 to an Internet Gateway." },
+  { "id": "aws-010", "deck": "aws", "front": "NAT Gateway", "back": "Sits in a public subnet; lets private-subnet resources reach the internet outbound without being reachable from it. Scoped to one AZ." },
+  { "id": "aws-011", "deck": "aws", "front": "VPC Peering transitivity", "back": "Not transitive. If A peers with B and B peers with C, A cannot reach C through B -- use a Transit Gateway for many-VPC connectivity." },
+  { "id": "aws-012", "deck": "aws", "front": "VPC Endpoint", "back": "Lets resources reach AWS services without the public internet or a NAT Gateway. Gateway endpoints (free, S3/DynamoDB) vs Interface endpoints (billed, PrivateLink)." },
+  { "id": "aws-013", "deck": "aws", "front": "ALB vs NLB", "back": "ALB = Layer 7, HTTP-aware, path/host routing. NLB = Layer 4, raw TCP/UDP, lowest latency, static IP per AZ." },
+  { "id": "aws-014", "deck": "aws", "front": "Multi-AZ", "back": "Protects against a data-center-level failure within one region. The default resilience target for most workloads." },
+  { "id": "aws-015", "deck": "aws", "front": "Multi-Region", "back": "Protects against a whole-region failure, at much higher cost/complexity. A deliberate tradeoff, not a default best practice." },
+  { "id": "aws-016", "deck": "aws", "front": "Well-Architected Framework pillars", "back": "Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability -- six total." },
+  { "id": "aws-017", "deck": "aws", "front": "Target tracking scaling", "back": "The simplest Auto Scaling Group policy: declare a target metric value (e.g. 50% avg CPU) and AWS adjusts capacity to hold it there." },
+  { "id": "aws-018", "deck": "aws", "front": "Route 53 routing policies", "back": "Failover, weighted, latency-based, and geolocation -- all driven by health checks, entirely at the DNS layer." },
+  { "id": "aws-019", "deck": "aws", "front": "IAM scope", "back": "Global -- unlike EC2, VPC, and EBS, which are all regional." },
+  { "id": "aws-020", "deck": "aws", "front": "AWS SAA-C03 passing score", "back": "Scaled score of 720 out of 1000 -- NOT literally 72% of raw questions, since AWS scales per-question difficulty." }
+]

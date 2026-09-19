@@ -1,0 +1,23 @@
+[
+  { "id": "k8s-001", "deck": "kubernetes", "front": "Pod", "back": "The smallest deployable unit -- one or more containers sharing a network namespace and, optionally, storage volumes." },
+  { "id": "k8s-002", "deck": "kubernetes", "front": "Why not create bare Pods in production", "back": "A standalone Pod has no self-healing -- nothing recreates it if it dies. Use a Deployment instead." },
+  { "id": "k8s-003", "deck": "kubernetes", "front": "Deployment vs ReplicaSet", "back": "You edit the Deployment (desired state, image, replicas, strategy); it manages a ReplicaSet underneath, which you almost never touch directly." },
+  { "id": "k8s-004", "deck": "kubernetes", "front": "kubectl rollout undo", "back": "Rolls a Deployment back to its previous revision -- the fast fix for a bad rollout." },
+  { "id": "k8s-005", "deck": "kubernetes", "front": "Why Services exist", "back": "Pod IPs change every time a Pod is recreated. A Service gives a stable virtual IP/DNS name that load-balances across matching Pods." },
+  { "id": "k8s-006", "deck": "kubernetes", "front": "Service selector matching", "back": "A Service routes purely by label selector -- a mismatch between selector and Pod labels is a classic 'why can't I reach my app' bug." },
+  { "id": "k8s-007", "deck": "kubernetes", "front": "ClusterIP / NodePort / LoadBalancer", "back": "ClusterIP: internal only. NodePort: static port on every node, mostly for testing. LoadBalancer: provisions an external cloud load balancer." },
+  { "id": "k8s-008", "deck": "kubernetes", "front": "Namespace", "back": "Partitions a cluster into virtual clusters for teams/environments/apps -- RBAC and quotas are commonly scoped per namespace." },
+  { "id": "k8s-009", "deck": "kubernetes", "front": "Are Secrets encrypted?", "back": "No, not by default -- base64-encoded only, which is trivially reversible. Real encryption at rest needs to be set up deliberately." },
+  { "id": "k8s-010", "deck": "kubernetes", "front": "ConfigMap vs Secret", "back": "Same injection mechanism (env vars or mounted files); the distinction is intent -- non-sensitive vs sensitive data." },
+  { "id": "k8s-011", "deck": "kubernetes", "front": "Ingress", "back": "Routes HTTP(S) traffic to many Services by hostname/path through one entry point -- does nothing without an Ingress Controller running." },
+  { "id": "k8s-012", "deck": "kubernetes", "front": "NetworkPolicy caveat", "back": "Enforcement depends entirely on the cluster's CNI plugin -- some CNIs silently ignore NetworkPolicy objects." },
+  { "id": "k8s-013", "deck": "kubernetes", "front": "PersistentVolume vs PersistentVolumeClaim", "back": "PV = the actual storage resource. PVC = a request for storage that gets bound to a matching PV." },
+  { "id": "k8s-014", "deck": "kubernetes", "front": "StorageClass", "back": "Enables dynamic provisioning: a PVC referencing it automatically creates a matching PV on demand, instead of an admin pre-creating one." },
+  { "id": "k8s-015", "deck": "kubernetes", "front": "Role vs ClusterRole", "back": "Role is namespace-scoped; ClusterRole applies cluster-wide (or to cluster-scoped resources like Nodes)." },
+  { "id": "k8s-016", "deck": "kubernetes", "front": "ServiceAccount", "back": "How a Pod authenticates to the API server as itself -- the workload-identity equivalent of an IAM role." },
+  { "id": "k8s-017", "deck": "kubernetes", "front": "Helm chart", "back": "A templated bundle of manifests with configurable values.yaml, managed as one versioned 'release' via install/upgrade/rollback." },
+  { "id": "k8s-018", "deck": "kubernetes", "front": "HPA vs Cluster Autoscaler", "back": "HPA scales the number of Pod replicas by metric. Cluster Autoscaler scales the number of nodes when Pods can't be scheduled." },
+  { "id": "k8s-019", "deck": "kubernetes", "front": "kubectl logs --previous", "back": "Shows logs from the prior container instance -- essential right after a crash/restart, since the new instance's own logs are empty." },
+  { "id": "k8s-020", "deck": "kubernetes", "front": "First troubleshooting command for a stuck Pod", "back": "kubectl describe pod <name> -- check the Events section at the bottom before anything else." },
+  { "id": "k8s-021", "deck": "kubernetes", "front": "CKA exam format", "back": "Hands-on performance tasks in a live cluster, no multiple choice. Passing score commonly cited as 66/100." }
+]
