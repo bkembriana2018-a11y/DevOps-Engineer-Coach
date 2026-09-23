@@ -6,6 +6,8 @@ This is **not** official AWS, HashiCorp, or CNCF exam content. All practice ques
 
 **Sibling project:** [afoqt-coach-ai](https://github.com/WGLewis0721/afoqt-coach-ai) — same architecture, different domain.
 
+**Also in this repo:** [course-coach-ai/](course-coach-ai/) — a separate, unrelated app for keeping up with your own college classes (multi-course, syllabus + your own lecture notes, no hardcoded subject matter). Runs on its own port (8767) and has its own README.
+
 ---
 
 ## What you get

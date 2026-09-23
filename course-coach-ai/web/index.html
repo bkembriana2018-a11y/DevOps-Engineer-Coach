@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course Coach</title>
+  <link rel="stylesheet" href="/static/styles.css?v=2" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark">Course</span>
+      <span class="name">Coach</span>
+      <span class="sub">stay caught up, class by class</span>
+    </div>
+    <div class="top-right">
+      <select id="courseSelect" class="course-select"></select>
+      <button id="newCourseBtn" class="ghost small">+ New class</button>
+      <div class="status" id="llmStatus">checking LLM…</div>
+    </div>
+  </header>
+
+  <div id="newCourseForm" class="modal-row" hidden>
+    <input id="newCourseName" placeholder="Class name (e.g. Organic Chemistry II)" />
+    <input id="newCourseCode" placeholder="Course code (optional)" />
+    <button id="saveCourseBtn">Create class</button>
+    <button id="cancelCourseBtn" class="ghost">Cancel</button>
+  </div>
+
+  <nav class="tabs">
+    <button data-tab="dash" class="on">My Progress</button>
+    <button data-tab="lectures">Lectures</button>
+    <button data-tab="study">Learn</button>
+    <button data-tab="cards">Flashcards</button>
+    <button data-tab="quiz">Practice</button>
+    <button data-tab="coach">Coach</button>
+  </nav>
+
+  <main>
+    <div id="emptyState" class="hero" hidden>
+      <p class="hero-eyebrow">Hey ☾</p>
+      <h1 class="hero-title">Let's set up your first class.</h1>
+      <p class="hero-sub">Click <strong>+ New class</strong> above, give it a name, then set up its topics and exam dates in My Progress. Once that's in place, post lecture notes as you go and everything else — explanations, practice questions, flashcards — builds itself from your actual class material.</p>
+    </div>
+
+    <section id="tab-dash" class="panel on">
+      <div id="examBanner" class="exam-banner" hidden></div>
+
+      <h2>Set up topics & exams</h2>
+      <div class="row wrap">
+        <input id="newTopicLabel" placeholder="New topic (e.g. Week 3: SN1 vs SN2 reactions)" />
+        <button id="addTopicBtn">Add topic</button>
+      </div>
+      <div class="row wrap">
+        <input id="newExamLabel" placeholder="Exam name (e.g. Exam 1)" />
+        <input id="newExamDate" type="date" />
+        <button id="addExamBtn">Add exam date</button>
+      </div>
+      <p class="disclaimer" id="disclaimer"></p>
+
+      <h2>Where you stand</h2>
+      <div id="overallCard" class="cards"></div>
+      <h2>What to do next</h2>
+      <ol id="actions" class="actions"></ol>
+      <h2>Topic by topic</h2>
+      <div id="topicsTable" class="table-wrap"></div>
+    </section>
+
+    <section id="tab-lectures" class="panel">
+      <h2>Post this week's lecture</h2>
+      <div class="row wrap">
+        <label>Topic
+          <select id="lecTopic"></select>
+        </label>
+        <label>Week #
+          <input id="lecWeek" type="number" min="1" style="width:80px" />
+        </label>
+        <label>Title
+          <input id="lecTitle" placeholder="e.g. Lecture 6 slides" />
+        </label>
+      </div>
+      <textarea id="lecContent" rows="10" placeholder="Paste the lecture notes, slide text, or transcript here…"></textarea>
+      <div class="row">
+        <button id="saveLectureBtn">Save lecture</button>
+        <span id="lecSaveMsg" class="muted"></span>
+      </div>
+      <div class="row wrap">
+        <label class="check"><input type="checkbox" id="genFlashOnSave" checked /> Generate flashcards from it</label>
+        <label class="check"><input type="checkbox" id="genQuizOnSave" /> Preview a few practice questions from it</label>
+      </div>
+      <div id="genResult" class="muted"></div>
+
+      <h2>Posted lectures</h2>
+      <div class="row wrap">
+        <label>Filter by topic
+          <select id="lecFilterTopic"><option value="">All topics</option></select>
+        </label>
+      </div>
+      <div id="lectureList"></div>
+    </section>
+
+    <section id="tab-study" class="panel">
+      <div class="row">
+        <label>Topic
+          <select id="studyTopic"></select>
+        </label>
+        <button id="studyAsk">Explain this to me</button>
+      </div>
+      <article id="studyOut" class="prose"></article>
+    </section>
+
+    <section id="tab-cards" class="panel">
+      <div class="row wrap">
+        <label>Topic
+          <select id="cardTopic"></select>
+        </label>
+        <button id="genCardsBtn" class="ghost">Generate 8 from lectures</button>
+        <button id="shuffleCards" class="ghost">Shuffle</button>
+      </div>
+      <div class="row wrap">
+        <input id="manualFront" placeholder="Front (term/concept)" />
+        <input id="manualBack" placeholder="Back (answer/explanation)" />
+        <button id="addCardBtn" class="ghost">+ Add card</button>
+      </div>
+      <div id="cardMeta" class="muted"></div>
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flip card">
+        <div class="flashcard-inner">
+          <div class="flashcard-face front">
+            <div class="flashcard-eyebrow">Tap to flip</div>
+            <div class="flashcard-text" id="cardFront"></div>
+          </div>
+          <div class="flashcard-face back">
+            <div class="flashcard-eyebrow">Answer</div>
+            <div class="flashcard-text" id="cardBack"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="cardNav">
+        <button id="cardPrev" class="ghost">← Previous</button>
+        <button id="cardFlip">Flip</button>
+        <button id="cardNext" class="ghost">Next →</button>
+        <button id="cardDelete" class="ghost">Delete this card</button>
+      </div>
+    </section>
+
+    <section id="tab-quiz" class="panel">
+      <div class="row wrap">
+        <label>Topic
+          <select id="quizTopic">
+            <option value="">Mixed (all topics)</option>
+          </select>
+        </label>
+        <label>Questions
+          <select id="quizN">
+            <option>5</option>
+            <option selected>8</option>
+            <option>10</option>
+          </select>
+        </label>
+        <label>Difficulty
+          <select id="quizDiff">
+            <option value="any">Any</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+        <button id="startQuiz">Generate quiz</button>
+      </div>
+      <div id="quizMeta" class="muted"></div>
+      <div id="quizBox"></div>
+    </section>
+
+    <section id="tab-coach" class="panel">
+      <div class="row">
+        <label>Focus on
+          <select id="coachSub">
+            <option value="">General</option>
+          </select>
+        </label>
+      </div>
+      <div id="chatLog" class="chat"></div>
+      <div id="chatWait" hidden></div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" autocomplete="off" placeholder="Ask me anything — a concept, a discussion-post angle, a mini quiz…" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    Everything here is grounded in the lecture material you post — nothing is invented from outside your class.
+    Practice percent is not a grade prediction.
+  </footer>
+  <script src="/static/app.js?v=2"></script>
+</body>
+</html>
