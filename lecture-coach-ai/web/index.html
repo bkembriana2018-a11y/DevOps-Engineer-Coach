@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lecture Coach</title>
+  <link rel="stylesheet" href="/static/styles.css?v=1" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark">Lecture</span>
+      <span class="name">Coach</span>
+      <span class="sub">slides in, study guide out</span>
+    </div>
+    <div class="top-right">
+      <div class="status" id="llmStatus">checking LLM…</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel on">
+      <h2>Upload a lecture</h2>
+      <form id="uploadForm" class="row wrap">
+        <label>PowerPoint file (.pptx)
+          <input id="fileInput" type="file" accept=".pptx" required />
+        </label>
+        <label>Title (optional)
+          <input id="titleInput" type="text" placeholder="Defaults to the filename" />
+        </label>
+        <button type="submit" id="uploadBtn">Upload</button>
+      </form>
+      <div id="uploadMsg" class="muted"></div>
+
+      <h2>Your lectures</h2>
+      <div id="emptyState" class="hero" hidden>
+        <p class="hero-eyebrow">Hey ✎</p>
+        <h1 class="hero-title">Upload your first deck to get started.</h1>
+        <p class="hero-sub">Drop in a <strong>.pptx</strong> above, then click <strong>Generate study guide</strong> on it. Each lecture gets its own guide — an overview, key terms by topic, and a handful of self-test questions.</p>
+      </div>
+      <div id="lectureList"></div>
+    </section>
+
+    <section id="guideSection" class="panel" hidden>
+      <div class="row wrap" style="justify-content: space-between;">
+        <h2 id="guideTitle" style="margin:0; border:0; padding:0;">Study guide</h2>
+        <div class="row wrap" style="margin:0;">
+          <button id="downloadGuideBtn" class="ghost small">Download .md</button>
+          <button id="closeGuideBtn" class="ghost small">Close</button>
+        </div>
+      </div>
+      <div id="guideMeta" class="muted"></div>
+      <article id="guideOut" class="prose"></article>
+    </section>
+  </main>
+
+  <footer>
+    Study guides are generated from your own uploaded slides — nothing is invented beyond brief clarifying context for terms your slides name but don't define.
+  </footer>
+  <script src="/static/app.js?v=1"></script>
+</body>
+</html>

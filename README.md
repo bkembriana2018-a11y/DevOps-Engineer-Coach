@@ -8,6 +8,8 @@ This is **not** official AWS, HashiCorp, or CNCF exam content. All practice ques
 
 **Also in this repo:** [course-coach-ai/](course-coach-ai/) — a separate, unrelated app for keeping up with your own college classes (multi-course, syllabus + your own lecture notes, no hardcoded subject matter). Runs on its own port (8767) and has its own README.
 
+**Also in this repo:** [lecture-coach-ai/](lecture-coach-ai/) — upload a lecture slide deck (`.pptx`) and get a Markdown study guide back. Runs on its own port (8768) and has its own README.
+
 ---
 
 ## What you get
